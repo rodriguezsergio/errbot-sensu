@@ -6,4 +6,4 @@ Module = errbot-sensu
 Description = An errbot sensu monitoring plugin to do operations
 
 [Python]
-Version = 2
+Version = 3
