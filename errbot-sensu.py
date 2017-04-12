@@ -90,6 +90,22 @@ class ErrbotSensu(BotPlugin):
             yield "{0}: {1}".format(param, str(client[param]))
 
     @botcmd(split_args_with=None)
+    def sensu_events(self, msg, args):
+        """
+        Returns active Sensu events.
+        """
+        events_url = self.bot_config.MONITORING_DASHBOARD
+        response = '\*Sensu Events\* -- <{0}|{1}\>\n'.format(events_url, 'Events Page')
+
+        events = self.sensu.get_events()
+        for i in events:
+            node_name = i['client']['name']
+            check = i['check']['name']
+            output = i['check']['output'].strip()
+            response += '\> The check \*{0}\* is failing on \*{1}\*. Its last output was: \`{2}\`\n'.format(check, node_name, output)
+        return response
+
+    @botcmd(split_args_with=None)
     def sensu_silenced(self, msg, args):
         """
         Returns list of silenced entries.
