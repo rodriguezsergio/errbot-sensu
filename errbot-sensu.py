@@ -89,6 +89,20 @@ class ErrbotSensu(BotPlugin):
         for param in client:
             yield "{0}: {1}".format(param, str(client[param]))
 
+    @botcmd(split_args_with=None)
+    def sensu_silenced(self, msg, args):
+        """
+        Returns list of silenced entries.
+        """
+        silenced_url = self.bot_config.MONITORING_DASHBOARD + '/#/silenced'
+        response = '\*Silenced Entries\*\n'
+        response += 'More info: <{0}|{1}\>\n'.format(silenced_url, 'Silenced Entries Page')
+
+        silenced = self.sensu.get_silenced()
+        for i in silenced:
+            response += '\> {0}\n'.format(i['id'])
+        return response
+
     # Plugin endpoints
     @webhook
     def sensu_event(self, kwargs):
